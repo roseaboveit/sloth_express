@@ -4,14 +4,14 @@ describe SessionsController do
 
   describe "GET 'create'" do
     it "returns http success" do
-      get 'create'
+      post 'create'
       response.should be_success
     end
   end
 
   describe "GET 'destroy'" do
     it "returns http success" do
-      get 'destroy'
+      delete 'destroy'
       response.should be_success
     end
   end

@@ -99,7 +99,7 @@
           </div>
 
           <br>
-
+          <% unless @featured_product.nil? %>
           <div id="featured_product">
             <p><strong>Featured Product</strong></p>
             <div class="filler_text">
@@ -107,6 +107,7 @@
               <p><%= link_to image_tag("#{@featured_product.photo}", width: 180), @featured_product %></p>
             </div>
           </div>
+          <% end %>
         </div>
       </div>
 

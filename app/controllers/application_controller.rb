@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
-  before_action :featured_product
+  before_action :featured_product, :unless => :missing_product?
 
   private
 
@@ -19,6 +19,11 @@ class ApplicationController < ActionController::Base
   def featured_product
     legit_photos ||= Product.all.reject { |p| p.photo == "" }
     @featured_product ||= legit_photos.sample
+  end
+
+  def missing_product?
+    if Product.first
+    end
   end
 
 end

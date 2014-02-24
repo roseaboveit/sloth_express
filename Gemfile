@@ -48,7 +48,7 @@ group :development, :test do
 end
 
 # Use ActiveModel has_secure_password
-gem 'bcrypt-ruby', '~> 3.1.2'
+gem 'bcrypt', '~> 3.1.2'
 
 # Use unicorn as the app server
 # gem 'unicorn'
@@ -58,3 +58,9 @@ gem 'bcrypt-ruby', '~> 3.1.2'
 
 # Use debugger
 # gem 'debugger', group: [:development, :test]
+
+group :development do
+  gem "better_errors"
+  gem "binding_of_caller"
+  gem 'simplecov', '~> 0.7.1'
+end

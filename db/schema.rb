@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 20131220235211) do
   end
 
   create_table "purchases", force: true do |t|
-    t.integer  "order_id",         limit: 255
+    t.integer  "order_id"
     t.string   "email"
     t.string   "address"
     t.string   "name"
@@ -63,8 +63,8 @@ ActiveRecord::Schema.define(version: 20131220235211) do
     t.string   "zipcode"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "expiration_year"
     t.string   "expiration_month"
+    t.string   "expiration_year"
   end
 
   create_table "reviews", force: true do |t|
