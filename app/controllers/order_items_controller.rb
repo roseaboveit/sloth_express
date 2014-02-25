@@ -9,35 +9,11 @@ class OrderItemsController < ApplicationController
 
   def create
     @product = Product.find(params[:product_id])
-
-    if @product.stock < 1
-      redirect_to product_path(@product), notice: "This product is out of stock."
-    else
-      if session[:order_id]
-        @order = Order.find(session[:order_id])
-      else
-        @order = Order.create(user_id: session[:user_id])
-        session[:order_id] = @order.id
-      end
-      add_item_to_cart
-    end
+    check_product
   end
 
   def add_item_to_cart
-    @product = Product.find(params[:product_id])
-    @order_item = OrderItem.find_by(product_id: @product.id, order_id: session[:order_id])
-
-    if @order_item 
-      if do_we_have_enough?(@order_item.quantity + 1)
-        @order_item.quantity += 1
-      else
-        redirect_to order_path(@order_item.order.id), :notice => "Sorry, we only have #{@order_item.product.stock}." and return
-      end
-    else
-      @order_item = OrderItem.new 
-      @order_item.product = @product
-      @order_item.order = @order
-    end
+    assign_values
 
     if @order_item.save
       redirect_to order_path(@order)
@@ -48,9 +24,9 @@ class OrderItemsController < ApplicationController
 
   def update
     if do_we_have_enough?(params[:order_item][:quantity].to_i) && @order_item.update(order_item_params)
-      redirect_to order_path(@order_item.order.id) and return
+      redirect_to order_path(@order_item.order)
     else
-      redirect_to order_path(@order_item.order.id), :notice => "Sorry, we only have #{@order_item.product.stock}." and return
+      redirect_to order_path(@order_item.order), :notice => "Sorry, we only have #{@order_item.product.stock}."
     end
   end
 
@@ -76,5 +52,30 @@ class OrderItemsController < ApplicationController
   
   def order_item_params
      params.require(:order_item).permit(:product_id, :order_id, :quantity )
+  end
+
+  def assign_values
+    @product = Product.find(params[:product_id])
+    @order_item = OrderItem.new 
+    @order_item.product = @product
+    @order_item.order = @order
+  end
+
+  def check_product
+    if @product.stock < 1
+      redirect_to product_path(@product), notice: "This product is out of stock."
+    else
+      check_or_create_session
+      add_item_to_cart
+    end
+  end
+
+  def check_or_create_session
+    if session[:order_id]
+        @order = Order.find(session[:order_id])
+    else
+      @order = Order.create(user_id: session[:user_id])
+      session[:order_id] = @order.id
+    end
   end
 end

@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def missing_product?
-    if Product.first
+    if featured_product
     end
   end
 

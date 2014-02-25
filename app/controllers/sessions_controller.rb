@@ -8,11 +8,7 @@ class SessionsController < ApplicationController
     if user && user.authenticate(params[:password])
       session[:user_id] = user.id
       assign_cart_to_user
-      unless current_user.username == "Sloth King"
-        redirect_to products_path, :notice => "Welcome, Sloth Cadet #{user.username}! Your mission, should you choose to accept it, is to find the best in sloth themed products and values!"
-      else
-        redirect_to products_path, :notice => "All hail the Sloth King!"
-      end
+      sloth_king_exception
     else
       flash.now.alert = "Invalid email or password"
       render "new"
@@ -35,6 +31,14 @@ class SessionsController < ApplicationController
     if session[:order_id]
       current_order.user_id = session[:user_id]
       current_order.save
+    end
+  end
+
+  def sloth_king_exception
+    unless current_user.username == "Sloth King"
+        redirect_to products_path, :notice => "Welcome, Sloth Cadet #{user.username}! Your mission, should you choose to accept it, is to find the best in sloth themed products and values!"
+    else
+        redirect_to products_path, :notice => "All hail the Sloth King!"
     end
   end
 end

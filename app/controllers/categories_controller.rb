@@ -11,7 +11,7 @@ class CategoriesController < ApplicationController
   end
 
   def edit
-    products_list
+    @products = Product.all.collect { |p| [ p.name, p.id ]}
   end
 
   def show
@@ -36,11 +36,6 @@ class CategoriesController < ApplicationController
     else
       render :edit
     end
-  end
-  
-  # Creates an array of all products
-  def products_list
-    @products = Product.all.collect { |p| [ p.name, p.id ]}
   end
 
   # Creates an array of products in a category
